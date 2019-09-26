@@ -1,0 +1,34 @@
+#home-image {
+  width: 70%;
+}
+
+#table-score {
+  width: 100%;
+}
+
+#table-score td, th {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+}
+
+#table-winloss {
+  margin-top: 5vh;
+  width: 100%;
+  text-align: center;
+}
+#table-winloss th {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  border-top: 1px solid #aaa;
+}
+
+.playerStatHead {
+  font-weight: bold;
+}
+
+.playerStat, .playerStatLabel {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+  padding: 0.2em;
+}
