@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<!-- saved from url=(0076)https://sreeshanath.github.io/lab-instructions/lab3_git_scripting/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CSCI 3308 Lab 3</title>
+    <!-- Bootstrap core CSS & JS -->
+	<link rel="stylesheet" type="text/css" href="./CSCI 3308 Lab 3_files/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./CSCI 3308 Lab 3_files/prism.css">
+
+	<script src="./CSCI 3308 Lab 3_files/jquery-3.3.1.js"></script>
+	<script src="./CSCI 3308 Lab 3_files/popper.js"></script>
+	<script src="./CSCI 3308 Lab 3_files/bootstrap.js"></script>
+	<script src="./CSCI 3308 Lab 3_files/clipboard.js"></script>
+	<script src="./CSCI 3308 Lab 3_files/prism.js"></script><script src="./CSCI 3308 Lab 3_files/clipboard.min.js"></script>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="./CSCI 3308 Lab 3_files/labLayout.css">
+	<script src="./CSCI 3308 Lab 3_files/labScripts.js"></script>
+	<style>
+		th {
+			min-width: 205px;
+		}
+		th, td {
+  			border-bottom: 1px solid #ddd;
+		}
+		tr:hover {
+			background-color: #f5f5f5;
+		}
+		ol {
+			margin-right: 50px;
+		}
+	</style>
+	</head>
+    <body onload="loadPage()">
+		<main role="main" class="container">
+			<div class="container-fluid">
+			  <div class="row">
+				<div class="col-10">
+					<h1 class="display-4">Lab 3 - Handling Scripts &amp; Working with Git</h1>
+					<p class="lead">In this lab, you will learn how to write bash scripts and how to back up your code to your git repository. To receive credit for this lab, you MUST complete steps 1, 2, 3 and 4.1-4.2.3 in recitation and get marked off by your TA. You MUST complete the rest of step 4 (either in recitation or on your own) and upload "lab_3_link.txt" to Canvas by the deadline.
+						<b>You may work with a partner. If you do, make sure to include your partners name at the top of "lab3_link.txt".</b>  </p>
+				</div>
+				<div class="col-2">
+					<table class="table">
+						<tbody><tr>
+							<th class="h5" style="text-align:center">Est. Time  ⏱</th>
+						</tr>
+						<tr>
+							<td class="h5" style="text-align:center"><span id="eta">95</span> minutes</td>
+						</tr>
+					</tbody></table>
+				</div>
+			  </div>
+			</div>
+
+			<div class="card card-body" id="step1">
+				<div class="stepLine">
+					<p class="alignleft h5">1. Bash and regex tutorial</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(1)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Expand</button>
+					<p class="alignright h5">(<span class="time" id="time1">15</span> Minutes)</p>
+				</div>
+				<div class="collapse" id="multiCollapseExample1">
+					<ol>
+						<dl>
+							<dt><li>Navigating the File System</li></dt>
+							<dd>
+								Let's practice some linux commands that we can use to navigate the file system
+								<div class="row">
+										<ol>
+											<li>Open a terminal: (ctrl + t) or right click on your Desktop and select "Open in Terminal"</li>
+											<li>Find out which directory you are in: pwd</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">pwd</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Change to your Documents directory: cd Documents</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">cd</span> Documents</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Run the 'pwd' command again and verify that you are in Documents</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">pwd</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Create a new directory: mkdir lab_3</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">mkdir</span> lab_3</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Change to your 'lab_3 directory': cd lab_3</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">cd</span> lab_3</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Create a file named 'tmp.sh': touch tmp.sh</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">touch</span> tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Open the file with the vim editor: vim tmp.sh</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">vim</span> tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Write the following line into the file: echo $USER</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$USER</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Save and close the file. In the editor type: :wq</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>:wq</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Execute the file: ./tmp.sh Did it work? Why or why not?</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>./tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>List the contents of the current directory: ls -l</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">ls</span> -l</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Change the permissions of the file 'tmp.sh' to make it executable: chmod +x tmp.sh </li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">chmod</span> +x tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>List the contents of the current directory again: ls -l</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">ls</span> -l</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Execute the file again: ./tmp.sh</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>./tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Check the contents of 'tmp.sh': cat tmp.sh</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">cat</span> tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Delete the tmp.sh file: rm tmp.sh</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">rm</span> tmp.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>List the contents of the current directory: ls</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">ls</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Go back one directory: cd ..</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">cd</span> <span class="token punctuation">..</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Remove your new directory: rm -r lab_3 The "-r" flag stands for recursive (i.e., delete all the contents of lab_3 recursively including the directory itself).</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">rm</span> -r lab_3</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+										</ol>
+								</div>
+							</dd>
+							<dt><li>Bash Script Basics</li></dt>
+							<dd>
+								Let's look at some bash basics. Enter the following commands into your terminal.
+								<div class="row">
+										<ol>
+											<li>Create a variable 'day' and assign it the value 'Wednesday': day=Wednesday</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>day<span class="token operator">=</span>Wednesday</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of the variable: echo "Today is $day" Notice the $ dollar sign.</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token string">"Today is <span class="token variable">$day</span>"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Variables in Bash are untyped. Prove it: day=5</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>day<span class="token operator">=</span>5</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'day': echo "Today is day $day"</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token string">"Today is day <span class="token variable">$day</span>"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>What about this: a=1+2</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>a<span class="token operator">=</span>1+2</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Tell Bash to treat 1+2 as numbers: let a=1+2</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">let</span> a<span class="token operator">=</span>1+2</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>What if we use 'let' but provide a string like this: let a=hello Or this: let a="hello"</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">let</span> a<span class="token operator">=</span>hello</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>For more complicated arithmetic we can use $(()) like so: a=$(($day+1))</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>a<span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span>$day<span class="token operator">+</span><span class="token number">1</span><span class="token variable">))</span></span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>We can also assign linux commands to variables with command substitution using $() like this: a=$(ls -l)</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>a<span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> -l<span class="token variable">)</span></span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Another way to do command substitution is to use the backticks like this: a=`ls -l`</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span>a<span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token function">ls</span> -l<span class="token variable">`</span></span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+											<li>Output the contents of 'a': echo $a</li>
+											<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token keyword">echo</span> <span class="token variable">$a</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+										</ol>
+								</div>
+							</dd>
+							<dt><li>Regex Cheatsheet</li></dt>
+							<dd>
+								<table>
+									<tbody><tr>
+										<th>Metacharacter</th>
+										<th>Usage</th>
+									</tr>
+									<tr>
+										<td>.</td>
+										<td>Any one character</td>
+									</tr>
+									<tr>
+										<td>[ ]</td>
+										<td>Any enclosed character</td>
+									</tr>
+									<tr>
+										<td>*</td>
+										<td>Zero or more of the preceding character</td>
+									</tr>
+									<tr>
+										<td>?</td>
+										<td>Zero or one of the preceding character</td>
+									</tr>
+									<tr>
+										<td>+</td>
+										<td>One or more of the preceding character</td>
+									</tr>
+									<tr>
+										<td>^</td>
+										<td>Anchor - the beginning of a string</td>
+									</tr>
+									<tr>
+										<td>$</td>
+										<td>Anchor - the end of a string</td>
+									</tr>
+									<tr>
+										<td>\</td>
+										<td>Escape character</td>
+									</tr>
+									<tr>
+										<td>|</td>
+										<td>Boolean OR</td>
+									</tr>
+									<tr>
+										<td>{m, n}</td>
+										<td>The preceding character appears m to n times</td>
+									</tr>
+									<tr>
+										<td>\b</td>
+										<td>Anchor - the beginning of a word</td>
+									</tr>
+									<tr>
+										<td>[[:blank:]]</td>
+										<td>Space or tab</td>
+									</tr>
+								</tbody></table>
+								<br>
+								<table>
+									<tbody><tr>
+										<th>Regular Expression</th>
+										<th>Output</th>
+									</tr>
+									<tr>
+										<td>^The</td>
+										<td>Matches any string that starts with "The"</td>
+									</tr>
+									<tr>
+										<td>of despair$</td>
+										<td>Matches any string that ends with "of despair"</td>
+									</tr>
+									<tr>
+										<td>^abc$</td>
+										<td>A string that starts and ends with "abc" (effectively an exact match)</td>
+									</tr>
+									<tr>
+										<td>notice</td>
+										<td>A string that has the text "notice" in it</td>
+									</tr>
+									<tr>
+										<td>ab*</td>
+										<td>Matches a string that has an "a" followed by zero or more "b" (e.g., "ac", "abc", "abbc", etc.)</td>
+									</tr>
+									<tr>
+										<td>ab+</td>
+										<td>Same as above BUT the string has at least one "b" (e.g., "abc", "abbc", etc. BUT NOT "ac")</td>
+									</tr>
+									<tr>
+										<td>ab?</td>
+										<td>Similar as above, but there might be a single "b" or not (e.g., "ac", "abc" BUT NOT "abbc")</td>
+									</tr>
+									<tr>
+										<td>a?b+$</td>
+										<td>A possible "a" followed by one or more "b" at the end of a string (e.g., a string ending with "ab", or "abb", or "abbb", etc., or "b", or "bb", etc., BUT NOT "aab", or "aabb", etc.)</td>
+									</tr>
+								</tbody></table>
+							</dd>
+						</dl>
+					</ol>
+				</div>
+			</div>
+
+
+			<div class="card card-body" id="step2">
+				<div class="stepLine">
+					<p class="alignleft h5">2. Working with Bash</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(2)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Expand</button>
+					<p class="alignright h5">(<span class="time" id="time2">25</span> Minutes)</p>
+				</div>
+				<div class="collapse" id="multiCollapseExample2">
+					<ol>
+						<dl>
+							<dt><li> Create a New Directory</li></dt>
+							<dd>
+								<div class="row">
+									<div class="col-5">
+										In order to create a new directory, you'll need to do the following:
+										<ol>
+											<li>Open a terminal: (ctrl + t) or right click on your Desktop and select "Open in Terminal"</li>
+											<li>Change to your Documents directory: cd Documents</li>
+											<li>Create a new directory: mkdir lab_3</li>
+											<li>Change to your new directory: cd lab_3</li>
+											<li>Download <a href="https://sreeshanath.github.io/lab-instructions/lab3_git_scripting/regex_practice.txt" target="_blank">regex_practice.txt</a> and put it into lab_3 folder.</li>
+										</ol>
+									</div>
+									<div class="col-7">
+										<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:"></span></span><span class="token function">cd</span> Documents</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+										<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents"></span></span><span class="token function">mkdir</span> lab_3</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+										<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents"></span></span><span class="token function">cd</span> lab_3</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+                    <div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span><span class="token punctuation">[</span>Next command<span class="token punctuation">]</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+							</div></dd>
+							<dt><li> Create a Bash Script File</li></dt>
+							<dd>
+								Using your favorite text editor (vim/nano or the default text editor in Ubuntu), create a new text file called practice.sh.
+								<br>
+								<b>Make sure you create your file in the new folder you created in the previous step.</b>
+									<pre>Directory Structure:
+|--Documents
+	|--lab_3
+		|--practice.sh
+		|--regex_practice.txt (downloaded with lab instructions)</pre>
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span><span class="token function">vim</span> practice.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span><span class="token function">nano</span> practice.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li> Create a simple script</li></dt>
+							<dd>
+								Copy the the following code into practice.sh:
+								<div class="row">
+									<div class="col-6">
+										<ol>
+											<li><b>#!/bin/bash</b> - The first line is called the "shebang" which tells the operating system which program will be running the script (in this case bash).</li>
+											<li><b>#</b> - The next few lines are comments (denoted by the hash or pound symbol #).</li>
+											<li><b>echo "Enter a number"</b>  - The echo command is a print statement.  It will output content to the terminal for the user to see.</li>
+											<li><b>read numOne </b> - The read command will accept the next user input and store it into the variable named "numOne".  Note, there is no variable type listed!  For now, we will assume the user enters appropriate data.</li>
+											<li><b>sum=$(($numOne + $numTwo))</b> - To perform an arithmetic operation, we need to use $((expression)), where "expression" is the arithmetic expression we want to evaluate (e.g., 2+3). Make sure to add the "$" in front of any variable names and ensure no spacing between the equal sign and dollar sign <b style="color:red">=$</b></li>
+											<li><b>echo "The sum is: $sum"</b> - To reference a variable in a print statement, use the "$" dollar sign and then list the variable name.</li>
+											<li><b>let prod=numOne*numTwo</b> - Another way to write an arithmetic expression is to use the let command.  This allows you to write the math expression in a way similiar to other programming languages.</li>
+											<br>
+											<a class="btn btn-primary" href="https://ryanstutorials.net/bash-scripting-tutorial/bash-arithmetic.php">Other Arithmetic Examples Here</a>
+										</ol>
+									</div>
+									<div class="col-6">
+										<div class="code-toolbar"><pre class=" language-bash"><code class=" language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token comment"># Author : Your Name</span>
+<span class="token comment"># Date: Today's date</span>
+<span class="token comment"># Script follows here:</span>
+<span class="token keyword">echo</span> <span class="token string">"Enter a number: "</span>
+<span class="token function">read</span> numOne
+<span class="token keyword">echo</span> <span class="token string">"Enter a second number: "</span>
+<span class="token function">read</span> numTwo
+sum<span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span>$numOne <span class="token operator">+</span> $numTwo<span class="token variable">))</span></span>
+<span class="token keyword">echo</span> <span class="token string">"The sum is : <span class="token variable">$sum</span>"</span>
+<span class="token keyword">let</span> prod<span class="token operator">=</span>numOne*numTwo
+<span class="token keyword">echo</span> <span class="token string">"The product is: <span class="token variable">$prod</span>"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+								</div>
+							</dd>
+							<dt><li> Make sure your file is executable</li></dt>
+							<dd>
+								In order to run a program, we need to make sure it is executable.  The command we'll need is chmod.  Using this command, we can modify the read (r), write (w), executable (x), permissions of a file.
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span><span class="token function">chmod</span> +x practice.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+								To run the program, add ./ to the front of the file name.
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span>./practice.sh</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li> Read command line arguments</li></dt>
+							<dd>
+								<b>Append</b> the code below to your practice.sh script.
+								<div class="row">
+									<div class="col-6">
+										<ol>
+											<li><b>$0 </b> - Instead of relying on user prompts and the read command, our script can also use command line arguments.
+											Command line arguments are grouped together like an array, which you can access with $index, where index is the command line entry you wish to access.
+											<p>Note, $0 will list the file name.  The first command line argument is listed at $1</p></li>
+										</ol>
+									</div>
+									<div class="col-6">
+										<div class="code-toolbar"><pre class=" language-bash"><code class=" language-bash"><span class="token keyword">echo</span> <span class="token string">"File Name: <span class="token variable">$0</span>"</span>
+<span class="token keyword">echo</span> <span class="token string">"Command Line Argument 1: <span class="token variable">$1</span>"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+								</div>
+							</dd>
+							<dt><li> Run a linux command in your script</li></dt>
+							<dd>
+								<b>Append</b> the following code to your practice.sh script.
+								<div class="row">
+									<div class="col-6">
+										<b>grep $1 $2 </b> - We can run commands just like we would in the terminal.  Here we are using grep and listing $1 as our pattern and $2 as our file to search.
+									</div>
+									<div class="col-6">
+										<div class="code-toolbar"><pre class=" language-bash"><code class=" language-bash"><span class="token function">grep</span> <span class="token variable">$1</span> <span class="token variable">$2</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-6">
+										Now, let's run grep on our practice file (regex_practice.txt), looking for any of the email address that are from geocities.com.
+									</div>
+									<div class="col-6">
+										<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> ./practice.sh <span class="token string">"@geocities.com"</span> regex_practice.txt</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+								</div>
+							</dd>
+						</dl>
+					</ol>
+				</div>
+			</div>
+
+			<div class="card card-body" id="step3">
+				<div class="stepLine">
+					<p class="alignleft h5">3. Save your practice work to Github</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(3)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Expand</button>
+					<p class="alignright h5">(<span class="time" id="time3">10</span> Minutes)</p>
+				</div>
+				<div class="collapse" id="multiCollapseExample3">
+					<ol>
+						<dl>
+							<dt><li> Create a new Github Repo online </li></dt>
+							<dd>
+								<p>Log into your Github account and create a new repo called lab_3.  Make sure that you leave "Initialize this repository with a README" <b>UNCHECKED!</b></p>
+							</dd>
+							<dt><li> Initialize your local git directory</li></dt>
+							<dd>
+								Make sure your terminal is inside of your lab_3 directory.  The "init" command will create a .git file and create a local git instance to keep track of all the changes inside your lab_3 folder.
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> <span class="token function">git</span> init</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li>Stage your files to be committed.</li></dt>
+							<dd>
+								The "add" command will stage any files you choose to be staged to commit (update) in your local git repository.  The "." period here lets you select all of the files that have been added or modified since the last commit.
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> <span class="token function">git</span> add <span class="token keyword">.</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li>Commit your changes </li></dt>
+							<dd>
+								Running the "commit" command will now update your <b>local</b> git repository with the changes you staged.  The -m command is required and will follow with whatever message you wish to store for your commit.
+								This is part of your documentation, so try to make commit messages informative!
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> <span class="token function">git</span> commit -m <span class="token string">"Creating practice.sh file and storing regex_practice.sh"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li>Connect your local git directory to your Github repo </li></dt>
+							<dd>
+								<b style="color:red"> Replace "type in your github_url" with the https url provided by your Github Repo, remember: remove the double quotes (" ").</b>
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> <span class="token function">git</span> remote add origin <span class="token string">"type in your github_url"</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+							<dt><li>Push to your Github repo </li></dt>
+							<dd>
+								The "push" command will upload your files to the github repo that you designated as the "origin". "master" here means the "master branch" of our repo.
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span> <span class="token function">git</span> push origin master</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+							</dd>
+						</dl>
+					</ol>
+				</div>
+			</div>
+
+			<div class="card card-body" id="step4">
+				<div class="stepLine">
+					<p class="alignleft h5">4. Write your own scripts</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(4)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Expand</button>
+					<p class="alignright h5">(<span class="time" id="time4">40</span> Minutes)</p>
+				</div>
+				<div class="collapse" id="multiCollapseExample4">
+					<ol>
+						<dl>
+							<dt><li> Create a new script file </li></dt>
+							<dd>
+								<div class="row">
+									<div class="col-6">
+										Create a new file called "lab3_script.sh" inside your lab_3 folder.  At the start of the file, add a comment block with your name and your partner's name (if you are working with a partner).
+									</div>
+									<div class="col-6">
+									<div class="code-toolbar"><pre class=" language-bash"><code class=" language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token comment"># Authors : Your Name &amp; Your partner's name</span>
+<span class="token comment"># Date: 1/1/2019</span>
+
+<span class="token comment">#Problem 1 Code:</span>
+<span class="token comment">#Make sure to document how you are solving each problem!</span></code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+									</div>
+								</div>
+							</dd>
+							<dt><li>Write a script that will do the following:</li></dt>
+							<dd>
+								<ol>
+									<li>Prompts the user to input a file name and a regular expression, and stores the user input. (Hint: "read" command) </li>
+									<li>Using the "grep" command and the user input, search the given file with the given regular expression. (Hint: grep &lt;search pattern&gt; &lt;file name&gt;</li>
+									<li>Using the "grep" command and the file "regex_practice.txt", output the number of phone numbers in "regex_practice.txt". (Hint: grep -c will count the number of lines that match the pattern)</li>
+									<li>Using the "grep" command and the file "regex_practice.txt", output the following:
+										<ol>
+											<li>A count of the number of emails</li>
+											<li>A list of all the phone numbers in the "303" area code. (Hint: grep -o will print only the matching (non-empty) parts of a line)</li>
+											<li>Store a list of all the emails from geocities.com in a new file named "email_results.txt". (Hint: the "&gt;&gt;" operator appends the output to an existing file or creates a new file containing the output if it does not exist; for example, grep &lt;pattern&gt; &lt;file name&gt; &gt;&gt; email_results.txt)
+										</li></ol>
+									</li>
+									<li>Run git "add" on the new text file (email_results.txt).  Only this file should be staged! </li>
+									<li>Run git "commit" with some default message</li>
+									<li>Optionally, you can have your script also push your changes to Github.  You may run into issues running this via a script.  Before running the script you can look at temporarily storing your github credentials <a href="https://help.github.com/articles/caching-your-github-password-in-git/#platform-linux">(github guide)</a></li>
+									<li>If you did not have your script push your changes Github, make sure and do so manually in your terminal.</li>
+								</ol>
+							</dd>
+							<dt><li>Add your newly created script to Github </li></dt>
+							<dd>
+								Once you are finished with your lab3_script.sh, make sure to add/commit/push it to your github repo.
+							</dd>
+							<dt>Need Help?</dt>
+							<dd>
+								Not sure how to handle file redirects?  Check out a simple guide that can help you redirect your output from the terminal to a file <a href="https://www.tutorialspoint.com/unix/unix-io-redirections.htm">Handling Redirects</a>
+								<br>
+								If you're not sure about all the options for a command, consult the man page (short for manual).  For example, with grep you can learn about all of it's extra features:
+								<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3" data-filter-output="(out)"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><span class="token function">man</span> <span class="token function">grep</span>
+GREP(1)                          User Commands                         GREP(1)
+
+NAME
+       grep, egrep, fgrep, rgrep - print lines matching a pattern
+
+SYNOPSIS
+       grep [OPTIONS] PATTERN [FILE...]
+       grep [OPTIONS] -e PATTERN ... [FILE...]
+       grep [OPTIONS] -f FILE ... [FILE...]
+
+DESCRIPTION
+       grep  searches  for  PATTERN  in  each  FILE.  A FILE of “-” stands for
+       standard input.  If no FILE is given, recursive  searches  examine  the
+       working  directory,  and nonrecursive searches read standard input.  By
+       default, grep prints the matching lines.</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+
+							</dd>
+						</dl>
+					</ol>
+				</div>
+			</div>
+
+			<div class="card card-body" id="step5">
+				<div class="stepLine">
+					<p class="alignleft h5">5. Submission Guidelines</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(5)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">Expand</button>
+					<p class="alignright h5">(<span class="time" id="time5">5</span> Minutes)</p>
+				</div>
+				<div class="collapse" id="multiCollapseExample5">
+					<ol>
+						<dl>
+							<dt><li>Create a link to your github repo</li></dt>
+							<dd>
+								In a text file called "lab_3_link.txt", write down the following:
+								<ol>
+									<li>Your name</li>
+									<li>You partner's name (if you have one)</li>
+									<li>The link to your lab_3 Github Repo. <b>Make sure the repo is public!!!</b></li>
+								</ol>
+							</dd>
+							<dt><li>Submit to Canvas</li></dt>
+							<dd>
+								Submit your text file to the Canvas by the deadline.
+							</dd>
+						</dl>
+					</ol>
+				</div>
+			</div>
+
+			<div class="card card-body" id="step6">
+				<div class="stepLine">
+					<p class="alignleft h5">Other Exercises To Try</p>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" onclick="updateProgressBar(6)">Mark Complete</button>
+					<button class="btn btn-primary btn-sm alignbtn" type="button" data-toggle="collapse" data-target="#multiCollapseExample6" aria-expanded="false" aria-controls="multiCollapseExample6">Expand</button>
+				</div>
+				<div class="collapse" id="multiCollapseExample6">
+					<dl>
+						<dt>Git-It - Guided git exercises you can run in your terminal!</dt>
+						<dd>
+							<a href="https://github.com/jlord/git-it-electron#what-to-install">Git-It Repository</a>
+							<br>
+							As a note for Ubuntu users, Git-It does have a dependency (libgconf2-4) which you will need to install before trying to run Git-It
+							<div class="code-toolbar"><pre class="command-line language-bash" data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"><code class=" language-bash"><span class="command-line-prompt"><span data-prompt="csci3308@csci3308-VirtualBox:~/Documents/lab_3"></span></span><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> libgconf2-4</code></pre><div class="toolbar"><div class="toolbar-item"><a>Copy</a></div></div></div>
+						</dd>
+					</dl>
+				</div>
+			</div>
+
+		</main><!-- /.container -->
+		<div id="bottom_nav">
+			<div class="row">
+				<div class="col-10">
+				</div>
+				<div class="col-2">
+				    <div class="row">
+				        <div class="col-2">
+
+				        </div>
+				        <div class="col-10">
+        					<div class="card">
+        					  <div class="card-body">
+        					  	<p class="h4 text-center">Helper Icons</p>
+        					  	<hr>
+        					  	<div class="row">
+        					  	    <div class="col-4">
+        					  	        <img src="./CSCI 3308 Lab 3_files/alert.svg" alt="Octicon alert icon" style="padding-right:15px" height="30px">
+        					  	    </div>
+        					  	    <div class="col-8">Common Errors</div>
+        					  	</div>
+        					  	<div class="row">
+        					  	    <div class="col-4">
+        					  	        <img src="./CSCI 3308 Lab 3_files/info.svg" alt="Octicon info icon" style="padding-right:15px" height="30px">
+        					  	    </div>
+        					  	    <div class="col-8">More Information</div>
+        					  	</div>
+        					  </div>
+        					</div>
+        					<button class="btn btn-primary btn-block alignright expandAll" type="button">Expand All</button>
+        					<button class="btn btn-primary btn-block alignright collapseAll" type="button">Collapse All</button>
+        				</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	
+
+</body></html>
